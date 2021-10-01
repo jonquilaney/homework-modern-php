@@ -1,5 +1,11 @@
 {
     "require-dev": {
-        "monolog/monolog": "^1.23"
+        "monolog/monolog": "^1.23",
+        "phpstan/phpstan": "^0.12.99",
+        "phpstan/phpstan-strict-rules": "^0.12.11"
+    },
+    "scripts": {
+        "phpstan": "phpstan analyse -l 8 --memory-limit=500M --debug -c phpstan.neon src",
+        "phpcs": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix src"
     }
 }

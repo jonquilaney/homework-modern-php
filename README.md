@@ -101,3 +101,8 @@ foreach ($stats as $level => $count) {
     echo "$level: $count" . PHP_EOL;
 }
 ```
+
+### Spuštění mého řešení
+```bash
+php new.php example.log
+```

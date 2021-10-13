@@ -5,9 +5,9 @@ declare(strict_types=1);
 class Log
 {
     /**
-     * @var array<int, string> $rows
+     * @var resource
      */
-    private $rows;
+    private $handle;
 
 
     /**
@@ -17,23 +17,30 @@ class Log
      *
      * @throws \InvalidInputFileException
      */
-    public function __construct(string $filename)
+    public function __construct($filename = null)
     {
-        $file = @file_get_contents($filename);
-        if ($file === false) {
-            throw new InvalidInputFileException('Invalid input file');
+        if (!isset($filename)) {
+            $this->handle = STDIN;
+        } else {
+            $handle = @fopen($filename, "r");
+            if ($handle === false) {
+                throw new InvalidInputFileException('Invalid input file');
+            }
+            $this->handle = $handle;
         }
-        $this->rows = explode(PHP_EOL, $file);
     }
 
 
     /**
      * Get rows of Log.
      *
-     * @return array<int, string>
+     * @return \Generator<string>
      */
-    public function getRows(): array
+    public function getRows(): \Generator
     {
-        return $this->rows;
+        while ($line = fgets($this->handle)) {
+            yield $line;
+        }
+        fclose($this->handle);
     }
 }
